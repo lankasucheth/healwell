@@ -124,3 +124,18 @@
 - Tested successfully in Postman (HealWell collection), verified in MySQL Workbench
 - Known improvement needed later: API responses currently expose the full Users object including hashed
   password - should use a DTO (clean response shape) to hide sensitive fields. Not urgent, noted for later.
+  ## Mistakes & fixes log
+
+### 2026-08-16 — Guessed BCrypt hash for Admin seed (my error)
+- Attempted to seed an Admin account by giving a BCrypt hash for "Admin@123" without actually
+  generating/verifying it through real code - the hash was wrong, login failed with "Invalid email or password".
+- Fix: deleted the broken row, signed up admin@healwell.com through the normal, tested Signup endpoint
+  (guarantees a correct hash via our own passwordEncoder.encode()), then manually updated only the
+  `role` column to ADMIN via SQL - never touching/guessing the password hash again.
+- Lesson: never hand-write or guess cryptographic values (hashes, keys, tokens) - always generate
+  them through real, tested code and verify before using.
+- Minor cleanup note: this admin account has a stray blank Patient row from the brief signup step -
+  harmless, can be deleted later for tidiness.
+
+### 2026-08-16 — Duplicate SecurityConfig class
+...(existing entry stays)
