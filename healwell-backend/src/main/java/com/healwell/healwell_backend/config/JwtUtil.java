@@ -39,5 +39,15 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
+        
+    }
+
+    public String extractRole(String token) {
+        return (String) Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role");
     }
 }
