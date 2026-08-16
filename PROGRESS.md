@@ -107,3 +107,10 @@
   editing critical config files, rather than trusting the VS Code tab's unsaved-dot indicator alone.
   Also: `./mvnw clean compile` (not just `compile`) is the reliable way to force Maven to fully
   re-check everything when something seems stuck.
+  ## Phase 4 complete — Authentication
+- BCrypt password hashing configured (SecurityConfig)
+- Signup endpoint (/api/auth/signup) - tested, creates User + blank Patient row
+- Login endpoint (/api/auth/login) - tested, returns valid JWT token
+- Security rules: /api/auth/** is public, everything else requires authentication (not yet enforced per-role)
+- Known limitation: JWT secret key is randomly generated on each restart (fine for dev, needs fixing before production)
+- Next: Phase 5 - full CRUD APIs for Patient, Doctor, Appointment, DoctorAvailability, MedicalRecord
