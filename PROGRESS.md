@@ -139,3 +139,12 @@
 
 ### 2026-08-16 — Duplicate SecurityConfig class
 ...(existing entry stays)
+### Doctor CRUD - complete
+- POST /api/doctors - Admin only (creates Users + Doctor together)
+- GET /api/doctors, GET /api/doctors/{id} - any logged-in user
+- PUT /api/doctors/{id} - Admin only
+- DELETE /api/doctors/{id} - Admin only
+- Role-based security (@PreAuthorize("hasRole('ADMIN')")) tested and confirmed working:
+  Patient token correctly blocked (403) from create/delete; Admin token succeeds.
+- Admin seeded manually: signed up via normal endpoint, then role changed to ADMIN via SQL
+  (see mistakes log for why - avoids hand-crafted password hashes).
