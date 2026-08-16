@@ -194,3 +194,20 @@ DTOs to hide sensitive fields in responses, fixed JWT secret key (currently rege
   paid Collection Runner CSV data files
 - Lesson: pre-request script index still increments even if the actual request fails (e.g. server
   down) - always verify actual DB count after bulk operations, don't assume click-count = success-count
+  ## Phase 6 started — Frontend
+
+### Setup
+- healwell-frontend/ created: index.html, css/style.css, js/main.js
+- Home page built: navbar (Option B), hero (medium height), "Why HealWell" section,
+  specialty grid (10 specialties, dynamically rendered from main.js), CTA section, footer
+- pages/ folder created for sub-pages
+
+### Signup page - complete and tested
+- pages/signup.html, css/auth.css, js/api.js (reusable fetch wrapper), js/signup.js
+- Field-by-field validation on blur, inline error messages, submit blocked until all valid
+- Successfully calls real POST /api/auth/signup, redirects to login.html on success
+- Fixed CORS: backend was blocking requests from Live Server origin (127.0.0.1:5500) -
+  added CorsConfig.java to backend, allowing that origin
+- Tested end-to-end: created real account (Sucheth) via the actual frontend form, verified in MySQL
+
+### Next: login.html
