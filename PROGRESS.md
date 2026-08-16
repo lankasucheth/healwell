@@ -47,3 +47,32 @@
 
 ## Open questions / not yet decided
 - Exact fields for Users, Patient, Doctor, Appointment tables — not finalized yet.
+
+## Database schema (finalized — Phase 2 complete)
+
+### Users
+- id (PK), name, email (unique, used for login), phoneNumber (10 digits),
+  password (BCrypt hash), role (PATIENT/DOCTOR/ADMIN), isActive (default true), createdAt
+
+### Patient (all fields optional, filled later in profile)
+- id (PK), userId (FK -> Users), dateOfBirth, gender (MALE/FEMALE/OTHER),
+  address, bloodGroup (A+/A-/B+/B-/O+/O-/AB+/AB-)
+
+### Doctor (all fields mandatory, set by Admin at creation)
+- id (PK), userId (FK -> Users), specialization, qualification,
+  experienceYears, consultationFee, bio
+
+### DoctorAvailability
+- id (PK), doctorId (FK -> Doctor), dayOfWeek (MON-SUN), startTime, endTime,
+  slotDurationMinutes, isAvailable (toggle without deleting schedule)
+
+### Appointment
+- id (PK), patientId (FK -> Patient), doctorId (FK -> Doctor), dateTime, status
+- Rule: past dates/times blocked, enforced on BOTH frontend and backend
+- Patient/Doctor can edit/delete only their own appointments
+
+### MedicalRecord
+- id (PK), patientId (FK -> Patient), doctorId (FK -> Doctor),
+  appointmentId (FK -> Appointment), diagnosis, prescription, recordDate
+- Only Doctor can create records. Patient can view own (read-only). Admin cannot view medical content.
+- One row per visit -> patient history = all rows where patientId matches, sorted by recordDate
