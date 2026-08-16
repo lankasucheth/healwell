@@ -89,3 +89,10 @@
   foreign keys and unique constraints applied correctly. Confirmed visually in MySQL Workbench.
 - Note: Spring Security currently active with auto-generated random password (default behavior) —
   will be replaced with proper JWT-based auth in Phase 4.
+  ## Mistakes & fixes log
+
+### 2026-08-16 — Duplicate SecurityConfig class
+- Accidentally created SecurityConfig.java twice: once correctly in config/, once mistakenly in controller/ (still carrying the config package declaration).
+- Caused: "duplicate class: com.healwell.healwell_backend.config.SecurityConfig" compile error.
+- Fix: deleted the misplaced file in controller/ via `Remove-Item`, kept the correct one in config/.
+- Lesson: always double-check which folder is selected before "New File" — package declaration alone doesn't fix wrong file location.
