@@ -148,3 +148,9 @@
   Patient token correctly blocked (403) from create/delete; Admin token succeeds.
 - Admin seeded manually: signed up via normal endpoint, then role changed to ADMIN via SQL
   (see mistakes log for why - avoids hand-crafted password hashes).
+  ### DoctorAvailability CRUD - complete
+- POST /api/availability/{doctorId} - Doctor can only add to own schedule (doctorId ignored, taken from token);
+  Admin can add to any doctor's schedule
+- GET /api/availability/{doctorId} - public, view a doctor's availability slots
+- DELETE /api/availability/{id} - Doctor can delete own slots only; Admin can delete any
+- Tested: Doctor successfully added own Monday 9am-5pm slot, verified via GET
