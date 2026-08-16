@@ -97,3 +97,13 @@
 - Fix: deleted the misplaced file in controller/ via `Remove-Item`, kept the correct one in config/.
 - Lesson: always double-check which folder is selected before "New File" — package declaration alone doesn't fix wrong file location.
 - Postman: use a separate "HealWell" collection, distinct from old Meditrack collection. Claude reminds every time before testing.
+### 2026-08-16 — JWT dependency not actually saved, then duplicated
+- Added jjwt dependencies to pom.xml, but the file wasn't actually saved to disk before compiling —
+  compile errors showed "package io.jsonwebtoken does not exist" even though the pasted content looked correct in chat.
+- Verified using `Select-String -Path pom.xml -Pattern "jjwt"` — confirmed empty, proving the save never happened.
+- Re-added the dependencies, but accidentally pasted them twice (duplicate entries).
+- Fixed by fully replacing pom.xml content clean, then verified again with Select-String before compiling.
+- Lesson: always verify a file's real content on disk via terminal (Select-String / cat) after
+  editing critical config files, rather than trusting the VS Code tab's unsaved-dot indicator alone.
+  Also: `./mvnw clean compile` (not just `compile`) is the reliable way to force Maven to fully
+  re-check everything when something seems stuck.
