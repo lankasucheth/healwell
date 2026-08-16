@@ -24,3 +24,7 @@ Claude assigns itself a role based on the task:
 
 ## Mistake logging
 - Every bug, blunder, or wrong turn gets logged in PROGRESS.md — what happened, how it was fixed, so it's never repeated.
+## Documentation
+- After every meaningful change (new endpoint, entity, or completed phase), update BOTH:
+  - PROGRESS.md (detailed session log, decisions, mistakes/fixes)
+  - ARCHITECTURE.md (clean current-state reference: roadmap status, schema, endpoint list)
