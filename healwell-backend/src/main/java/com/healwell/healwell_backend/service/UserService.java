@@ -1,5 +1,7 @@
 package com.healwell.healwell_backend.service;
 
+import com.healwell.healwell_backend.config.JwtUtil;
+import com.healwell.healwell_backend.model.LoginRequest;
 import com.healwell.healwell_backend.model.Patient;
 import com.healwell.healwell_backend.model.SignupRequest;
 import com.healwell.healwell_backend.model.Users;
@@ -20,6 +22,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public Users registerPatient(SignupRequest request) {
 
@@ -42,5 +47,21 @@ public class UserService {
         patientRepository.save(patient);
 
         return savedUser;
+    }
+
+    public String login(LoginRequest request) {
+
+        Users user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!user.getIsActive()) {
+            throw new RuntimeException("Account is disabled");
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return jwtUtil.generateToken(user.getEmail(), user.getRole().name());
     }
 }
