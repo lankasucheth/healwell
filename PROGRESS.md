@@ -76,3 +76,16 @@
   appointmentId (FK -> Appointment), diagnosis, prescription, recordDate
 - Only Doctor can create records. Patient can view own (read-only). Admin cannot view medical content.
 - One row per visit -> patient history = all rows where patientId matches, sorted by recordDate
+
+## Phase 3 complete — Backend skeleton
+- Created healwell-backend via start.spring.io: Maven, Java 17 target, Spring Boot 4.1.0
+- Dependencies: Spring Web, Spring Data JPA, Spring Security, MySQL Driver, Validation, DevTools
+- Package structure: model, repository, service, controller, config (under com.healwell.healwell_backend)
+- application.properties (real, git-ignored) holds DB credentials
+- application.properties.example (tracked in git) holds placeholder template
+- Created all 6 JPA entity classes in model/ (Users, Patient, Doctor, DoctorAvailability, Appointment, MedicalRecord)
+- Created all 6 repository interfaces in repository/
+- First successful run: connected to MySQL, auto-created healwell_db with all 6 tables,
+  foreign keys and unique constraints applied correctly. Confirmed visually in MySQL Workbench.
+- Note: Spring Security currently active with auto-generated random password (default behavior) —
+  will be replaced with proper JWT-based auth in Phase 4.
