@@ -22,18 +22,28 @@
 - Appointment date/time picker: past dates fully blocked; today's past hours blocked; enforced on BOTH frontend and backend.
 - CRUD operations required on all entities (Patients, Doctors, Appointments) — core learning goal, tested via Postman before frontend.
 
+## Git / GitHub status
+- Local repo: D:\healwell, branch main.
+- GitHub remote: connected. Repo: github.com/lankasucheth/healwell (Public).
+- First push done, commit 037b49b.
+- Rule: never push without explicit user permission, every time.
+
 ## Session log
 
 ### 2026-08-16 — Project kickoff
 - Discussed and locked full tech stack (see above).
 - Verified installed tools: Java 26.0.1, Maven 3.9.16, Git 2.55.0, VS Code 1.133.0, MySQL Server 9.3 (via Workbench connection "Local", 127.0.0.1:3306).
 - Created project folder: D:\healwell
-- Ran `git init`, renamed default branch from `master` to `main`.
+- Ran git init, renamed default branch from master to main.
 - Created RULES.md and PROGRESS.md.
+
+### 2026-08-16 — First commit and GitHub connected
+- Committed RULES.md + PROGRESS.md (commit 037b49b).
+- Published local repo to GitHub via VS Code "Publish Branch".
+- Repo: github.com/lankasucheth/healwell (Public).
 
 ## Mistakes & fixes log
 (none yet)
 
 ## Open questions / not yet decided
 - Exact fields for Users, Patient, Doctor, Appointment tables — not finalized yet.
-- GitHub remote — not created yet, local-only for now.
