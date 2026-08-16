@@ -211,3 +211,9 @@ DTOs to hide sensitive fields in responses, fixed JWT secret key (currently rege
 - Tested end-to-end: created real account (Sucheth) via the actual frontend form, verified in MySQL
 
 ### Next: login.html
+### Login page - complete and tested
+- pages/login.html, js/login.js
+- Field validation (blur), inline errors, same pattern as signup
+- Calls real POST /api/auth/login, stores JWT token in localStorage (key: healwell_token)
+- Redirects to home page on success
+- Tested end-to-end: signed up (Dhanu), redirected to login, logged in successfully, landed on home page
