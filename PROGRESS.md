@@ -154,3 +154,14 @@
 - GET /api/availability/{doctorId} - public, view a doctor's availability slots
 - DELETE /api/availability/{id} - Doctor can delete own slots only; Admin can delete any
 - Tested: Doctor successfully added own Monday 9am-5pm slot, verified via GET
+### Appointment CRUD - complete
+- POST /api/appointments/book/{doctorId} - Patient books, validated against:
+  past-date block, doctor's actual availability (day+time), no double-booking same slot
+- GET /api/appointments/mine - shows Patient's own bookings OR Doctor's own schedule, based on token role
+- GET /api/appointments/all - Admin only, system-wide view
+- PUT /api/appointments/{id}/status - owner (Patient/Doctor) or Admin can update status
+- DELETE /api/appointments/{id} - cancels (sets status=CANCELLED), never hard-deletes
+- Status lifecycle: PENDING -> CONFIRMED -> COMPLETED (doctor marks after visit) or CANCELLED anytime
+- Design decision: "Missed" is a computed display-only label for past CONFIRMED appointments,
+  not a stored status - to be implemented in frontend/response formatting later
+- Tested: successful booking, rejected outside-availability booking, rejected double-booking
