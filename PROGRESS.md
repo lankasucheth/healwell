@@ -114,3 +114,13 @@
 - Security rules: /api/auth/** is public, everything else requires authentication (not yet enforced per-role)
 - Known limitation: JWT secret key is randomly generated on each restart (fine for dev, needs fixing before production)
 - Next: Phase 5 - full CRUD APIs for Patient, Doctor, Appointment, DoctorAvailability, MedicalRecord
+## Phase 5 in progress — Core CRUD APIs
+
+### Patient CRUD - complete
+- GET /api/patients/profile - view own profile (JWT-protected)
+- PUT /api/patients/profile - update own profile (dateOfBirth, gender, address, bloodGroup)
+- PUT /api/patients/deactivate - built, not yet tested (would block test account from further testing)
+- JwtAuthFilter created and wired into SecurityConfig - all /api/** routes except /api/auth/** now require valid Bearer token
+- Tested successfully in Postman (HealWell collection), verified in MySQL Workbench
+- Known improvement needed later: API responses currently expose the full Users object including hashed
+  password - should use a DTO (clean response shape) to hide sensitive fields. Not urgent, noted for later.
