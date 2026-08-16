@@ -96,3 +96,4 @@
 - Caused: "duplicate class: com.healwell.healwell_backend.config.SecurityConfig" compile error.
 - Fix: deleted the misplaced file in controller/ via `Remove-Item`, kept the correct one in config/.
 - Lesson: always double-check which folder is selected before "New File" — package declaration alone doesn't fix wrong file location.
+- Postman: use a separate "HealWell" collection, distinct from old Meditrack collection. Claude reminds every time before testing.
