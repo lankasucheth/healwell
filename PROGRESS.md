@@ -180,3 +180,17 @@ DTOs to hide sensitive fields in responses, fixed JWT secret key (currently rege
 - 25 local commits, nothing pushed to GitHub yet.
 - Next session: push this backend work to GitHub (user to confirm), then begin Phase 6 (frontend).
 - Reminder for next session: re-read RULES.md and this file before starting.
+### Test data seeded
+- 20 doctors created across 10 specializations (2 each) via Postman Pre-request script loop
+  (free alternative to paid Collection Runner CSV feature)
+- Script technique: array of doctor objects in Pre-request script, pm.collectionVariables
+  tracks index, increments on each Send click
+  ### Test data seeded — complete
+- 20 doctors across 10 specializations (2 each), created via Postman Pre-request script loop
+- 11 patients (1 original Ravi Kumar + 10 new), created via signup (3 done manually after script
+  index drifted past 3 failed early attempts, before app was running)
+- 1 admin (unchanged)
+- Technique: Pre-request script with array + pm.collectionVariables index, free alternative to
+  paid Collection Runner CSV data files
+- Lesson: pre-request script index still increments even if the actual request fails (e.g. server
+  down) - always verify actual DB count after bulk operations, don't assume click-count = success-count
