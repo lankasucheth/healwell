@@ -217,3 +217,61 @@ DTOs to hide sensitive fields in responses, fixed JWT secret key (currently rege
 - Calls real POST /api/auth/login, stores JWT token in localStorage (key: healwell_token)
 - Redirects to home page on success
 - Tested end-to-end: signed up (Dhanu), redirected to login, logged in successfully, landed on home page
+## [17-08-2026] Navbar User Menu (Avatar + Dropdown)
+
+**Status:** Done & tested
+
+**What was built:**
+- js/navbar.js — checks localStorage for JWT on page load; if present, decodes 
+  the token (email + role from claims) and replaces Login/Sign Up buttons with 
+  an avatar (initials) + name + dropdown (Profile, My Appointments, Logout)
+- CSS added to style.css (.user-menu, .avatar-circle, .user-dropdown, etc.)
+- Script tag added to index.html after main.js
+
+**Known limitation:** Display name is currently derived from the email prefix 
+(e.g. "dhanu" from dhanu@example.com), not a real name — because the login API 
+only returns { token }, and the JWT itself only contains email (sub) + role. 
+A real name requires either a new /me endpoint or adding a "name" claim to 
+the JWT at login time. Deferred for now — planned as a future improvement.
+
+**Mistake & fix logged:**
+- Last session we discussed navbar.js but never actually saved it to disk. 
+  This session we assumed it existed and tried to "debug" a bug that was 
+  actually just a missing file. 
+- Caught by running `Get-ChildItem -Recurse` to verify files on disk instead 
+  of trusting the VS Code Explorer view or memory of what we "should have" done.
+- Lesson: always verify file existence via terminal before debugging — don't 
+  trust assumption or a stale Explorer pane.
+
+**Tested:**
+- Avatar shows correct initial + email-prefix name after login ✅
+- Dropdown opens/closes on click, closes on outside click ✅
+- Logout clears token and reverts to Login/Sign Up buttons ✅
+## [17-08-2026] Security Fix: Password Exposure in Doctor API
+
+**Status:** Done & tested
+
+**Problem found:** GET /api/doctors and GET /api/doctors/{id} were returning 
+the full Doctor entity, including the nested Users object — which exposed 
+each doctor's BCrypt password hash publicly (endpoint has no auth requirement).
+
+**Fix:** Created a DoctorResponse DTO (new dto/ package — first DTO in the 
+project) containing only safe fields: id, name, email, phoneNumber, 
+specialization, qualification, experienceYears, consultationFee, bio. 
+Updated DoctorController's getAllDoctors() and getDoctorById() to map 
+Doctor -> DoctorResponse before returning.
+
+**Mistake & fix logged:**
+- After editing DoctorController.java, `mvn compile` said "Nothing to compile" 
+  even though the file had unsaved changes shown in VS Code (M indicator).
+- Lesson: always check the VS Code tab for the unsaved-changes dot/M before 
+  trusting a build result. When in doubt, use `mvn clean compile` instead of 
+  `mvn compile` — it forces a full rebuild and won't hide stale-cache issues.
+
+**Tested:**
+- GET /api/doctors — confirmed no password field, all 20 doctors returned 
+  with correct flat structure ✅
+- Backend still compiles clean, no regressions to existing Doctor CRUD ✅
+
+**Next planned:** GET /api/doctors/{id} spot-check (single doctor), then 
+build frontend Doctors browse page using this response shape.

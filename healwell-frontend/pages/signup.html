@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — HealWell</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="logo">Heal<span>Well</span></a>
+      <div class="navbar-actions">
+        <span class="nav-link-text">Already have an account?</span>
+        <a href="login.html" class="btn btn-secondary">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>Create your account</h1>
+      <p class="auth-subtitle">Book appointments with trusted doctors in minutes</p>
+
+      <form id="signup-form" novalidate>
+        <div class="form-group">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="Ravi Kumar" required>
+          <span class="error-message" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          <span class="error-message" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber">Phone number</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="9876543210" maxlength="10" required>
+          <span class="error-message" id="phoneNumber-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" required>
+          <span class="error-message" id="password-error"></span>
+        </div>
+
+        <span class="form-message" id="form-message"></span>
+
+        <button type="submit" class="btn btn-primary btn-full" id="submit-btn">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/signup.js"></script>
+</body>
+</html>

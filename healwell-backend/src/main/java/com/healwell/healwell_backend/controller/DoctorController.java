@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import com.healwell.healwell_backend.dto.DoctorResponse;
 import java.util.List;
 
 @RestController
@@ -30,18 +30,23 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Doctor>> getAllDoctors() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
-    }
+public ResponseEntity<List<DoctorResponse>> getAllDoctors() {
+    List<DoctorResponse> response = doctorService.getAllDoctors()
+            .stream()
+            .map(DoctorResponse::new)
+            .toList();
+    return ResponseEntity.ok(response);
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getDoctorById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(doctorService.getDoctorById(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Doctor doctor = doctorService.getDoctorById(id);
+        return ResponseEntity.ok(new DoctorResponse(doctor));
+    }   catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")

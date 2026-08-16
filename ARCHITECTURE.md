@@ -72,3 +72,8 @@ MedicalRecord also has FK: appointment_id → Appointment (unique — one record
 2. **React (later)** — rebuild frontend in React once comfortable with fundamentals
 3. **Docker (later)** — containerize the backend + MySQL using Docker (already installed on your PC), so the whole app runs with one command
 4. **Microservices (later)** — split this monolith into separate services, as a deliberate learning phase
+### Frontend: JWT Handling
+- Token stored in localStorage under key `healwell_token`
+- Frontend decodes JWT payload client-side (base64) to read `sub` (email) and 
+  `role` claims — no dedicated /me endpoint yet
+- Used in: js/navbar.js (login-state detection, avatar/name display)
