@@ -165,3 +165,18 @@
 - Design decision: "Missed" is a computed display-only label for past CONFIRMED appointments,
   not a stored status - to be implemented in frontend/response formatting later
 - Tested: successful booking, rejected outside-availability booking, rejected double-booking
+## Phase 5 COMPLETE — all Core CRUD APIs done
+
+- Patient CRUD ✅
+- Doctor CRUD ✅ (Admin-only create/update/delete, role security tested)
+- DoctorAvailability CRUD ✅ (Doctor own + Admin any)
+- Appointment CRUD ✅ (full validation: past-date block, availability match, no double-booking)
+- MedicalRecord CRUD ✅ (Doctor creates only, auto-completes appointment, Patient views own, Admin excluded)
+
+Backend is functionally complete for the core feature set. Not yet built: password reset,
+DTOs to hide sensitive fields in responses, fixed JWT secret key (currently regenerates on restart).
+
+## Session end — 2026-08-16
+- 25 local commits, nothing pushed to GitHub yet.
+- Next session: push this backend work to GitHub (user to confirm), then begin Phase 6 (frontend).
+- Reminder for next session: re-read RULES.md and this file before starting.
