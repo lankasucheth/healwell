@@ -1,5 +1,6 @@
 package com.healwell.healwell_backend.controller;
 
+import com.healwell.healwell_backend.model.LoginRequest;
 import com.healwell.healwell_backend.model.SignupRequest;
 import com.healwell.healwell_backend.model.Users;
 import com.healwell.healwell_backend.service.UserService;
@@ -22,6 +23,16 @@ public class AuthController {
             return ResponseEntity.ok(newUser);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        try {
+            String token = userService.login(request);
+            return ResponseEntity.ok().body("{\"token\": \"" + token + "\"}");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
         }
     }
 }
