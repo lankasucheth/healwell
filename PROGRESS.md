@@ -275,3 +275,87 @@ Doctor -> DoctorResponse before returning.
 
 **Next planned:** GET /api/doctors/{id} spot-check (single doctor), then 
 build frontend Doctors browse page using this response shape.
+## [18-08-2026] Doctors Browse Page + CORS/Security Config Bug Fix
+
+**Status:** Done & tested
+
+**What was built:**
+- pages/doctors.html — doctors browse page with specialty filter dropdown
+- js/doctors.js — fetches all doctors via GET /api/doctors, renders cards, 
+  client-side filter by specialty, reads ?specialty=X from URL for 
+  pre-filtering when navigating from home page specialty cards
+- css/doctors.css — card grid styling matching site theme
+
+**Bug found & fixed:** SecurityConfig.java had `.anyRequest().authenticated()` 
+with no explicit CORS or public-GET rule for /api/doctors — even though 
+CorsConfig.java existed, Spring Security blocked the request before CORS 
+could apply, surfacing as a confusing CORS error in the browser console 
+rather than a clear 401/403.
+
+**Fix:** Added `.cors(cors -> {})` and an explicit permitAll rule for 
+GET /api/doctors/** in SecurityConfig's filter chain, matching the 
+controller's actual intent (public browsing, admin-only writes).
+
+**Mistake & fix logged (repeat pattern):** Same "unsaved file + mvn compile 
+says nothing to compile" issue happened again. Reinforces the lesson: 
+always use `mvn clean compile` after editing Java files, and verify the 
+VS Code tab shows no unsaved indicator before trusting a build.
+
+**Tested:**
+- Doctors page loads all 20 doctors correctly ✅
+- Specialty filter dropdown works ✅
+- Navigating from home page specialty card pre-filters correctly ✅
+- Navbar (login state/avatar) works identically on this page ✅
+
+## [18-08-2026] Doctor Detail Page + Availability DTO Fix + Test Data Seeding
+
+**Status:** Done & tested
+
+**What was built:**
+- pages/doctor-detail.html + js/doctor-detail.js + css/doctor-detail.css
+  Shows a single doctor's full profile (bio, qualification, fee) and 
+  weekly availability, fetched via GET /api/doctors/{id} and 
+  GET /api/availability/{id} in parallel.
+
+**Backend fixes (same pattern as DoctorResponse):**
+- Created AvailabilityResponse DTO — GET /api/availability/{doctorId} was 
+  leaking full nested Doctor -> Users object (including password hash), 
+  same issue as the doctors list bug fixed earlier today.
+- Updated DoctorAvailabilityController to return the DTO.
+- Added GET /api/availability/** to SecurityConfig's permitAll list — 
+  was blocked by the same CORS+Security gotcha as before.
+
+**Test data seeded:** Added Mon-Fri, 9-5, 30-min availability slots for 
+doctors 3-21 via direct SQL (doctor 2 already had Monday-only data from 
+original seed). 95 new rows inserted, verified via GROUP BY count.
+
+**Tested:**
+- Doctor detail page renders profile + availability correctly ✅
+- Confirmed empty-state message before seeding, populated state after ✅
+- Verified in Postman: no password leak in availability response ✅
+
+**Known gap for next session:** Booking endpoint (POST /api/appointments/
+book/{doctorId}) takes a raw dateTime, not a slot ID — booking form will 
+need to combine weekly availability pattern + a real calendar date. 
+Not yet built. Plan to design this carefully next session, after a break.
+## [18-08-2026] Booking Flow — Started (In Progress)
+
+**Status:** Partial, not complete — continuing next session
+
+**What was built:**
+- js/doctor-detail.js — added renderBookingSection(): shows login prompt if 
+  not authenticated, otherwise a date picker (min=today) if logged in
+- Added formatTime12hr() helper — converts 24hr time strings to 12hr AM/PM 
+  format, applied to the Weekly Availability list display
+
+**Data change:** Replaced all doctor availability with a realistic schedule — 
+morning 10:00 AM-2:00 PM + evening 4:00 PM-7:00 PM (lunch break 2-4 PM 
+excluded), Mon-Fri, 30-min slots, for all 20 doctors. 200 rows total 
+(replaced the old 96-row 9-5 dataset via DELETE + re-INSERT in MySQL).
+
+**Mistake & fix logged:** Pasted new code into doctor-detail.js without 
+replacing old content first, causing duplicated function definitions 
+(same DOMContentLoaded listener and renderDoctor appearing twice). Caught 
+by checking VS Code's Outline panel, which clearly showed the duplicates. 
+Fixed by fully clearing the file and pasting one clean version.
+Lesson: when replacing significant chunks of a JS file,

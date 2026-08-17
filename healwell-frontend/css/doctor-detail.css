@@ -1,0 +1,115 @@
+/* ===== Doctor Detail Page ===== */
+
+.detail-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.detail-status {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin: 20px 0;
+}
+
+.detail-status.error {
+  color: #c0392b;
+}
+
+.doctor-profile-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.doctor-profile-card h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.doctor-profile-card .doctor-specialty {
+  display: inline-block;
+  background-color: #e1f5ee;
+  color: #0f6a52;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.doctor-profile-card .doctor-qualification,
+.doctor-profile-card .doctor-experience {
+  font-size: 15px;
+  color: #555;
+  margin-top: 8px;
+}
+
+.doctor-profile-card .doctor-fee {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-top: 8px;
+}
+
+.doctor-profile-card .doctor-bio {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.availability-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.availability-card h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.availability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slot-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f8f9f7;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.slot-day {
+  font-weight: 500;
+  color: #1a1a1a;
+  min-width: 100px;
+}
+
+.slot-time {
+  color: #333;
+}
+
+.slot-duration {
+  color: #777;
+  font-size: 13px;
+}
+
+.no-slots {
+  color: #777;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}

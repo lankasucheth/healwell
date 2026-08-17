@@ -77,3 +77,14 @@ MedicalRecord also has FK: appointment_id → Appointment (unique — one record
 - Frontend decodes JWT payload client-side (base64) to read `sub` (email) and 
   `role` claims — no dedicated /me endpoint yet
 - Used in: js/navbar.js (login-state detection, avatar/name display)
+### dto/ (Data Transfer Objects)
+- Added 17-08-2026 to fix a security issue: raw entity responses were 
+  leaking sensitive fields (e.g. password hash) via nested relationships.
+- DoctorResponse.java — safe response shape for Doctor, excludes password 
+  and other Users fields not needed by the frontend. Built via constructor 
+  that takes a Doctor entity and extracts only: id, name, email, 
+  phoneNumber, specialization, qualification, experienceYears, 
+  consultationFee, bio.
+- Pattern going forward: controllers should return DTOs, not raw JPA 
+  entities, whenever the entity has a relationship to Users (or any 
+  other entity with sensitive fields).

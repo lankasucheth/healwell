@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import com.healwell.healwell_backend.dto.AvailabilityResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,9 +39,13 @@ public class DoctorAvailabilityController {
     }
 
     @GetMapping("/{doctorId}")
-    public ResponseEntity<List<DoctorAvailability>> getAvailability(@PathVariable Long doctorId) {
-        return ResponseEntity.ok(availabilityService.getAvailabilityByDoctorId(doctorId));
-    }
+public ResponseEntity<List<AvailabilityResponse>> getAvailability(@PathVariable Long doctorId) {
+    List<AvailabilityResponse> response = availabilityService.getAvailabilityByDoctorId(doctorId)
+            .stream()
+            .map(AvailabilityResponse::new)
+            .toList();
+    return ResponseEntity.ok(response);
+}
 
     @DeleteMapping("/{availabilityId}")
     public ResponseEntity<?> deleteAvailability(Authentication authentication, @PathVariable Long availabilityId) {

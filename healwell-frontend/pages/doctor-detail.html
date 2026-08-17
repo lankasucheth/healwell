@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile — HealWell</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/doctor-detail.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="logo">Heal<span>Well</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#home">Home</a></li>
+        <li><a href="doctors.html">Find Doctors</a></li>
+        <li><a href="#appointments">Appointments</a></li>
+      </ul>
+      <div class="navbar-search">
+        <input type="text" placeholder="Search doctors, specialties...">
+      </div>
+      <div class="navbar-actions">
+        <a href="login.html" class="nav-link-text">Login</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="detail-page">
+    <div id="detail-status" class="detail-status"></div>
+    <div id="doctor-detail-content" class="doctor-detail-content">
+      <!-- filled in by JS -->
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 HealWell. Built for learning, made with care.</p>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/doctor-detail.js"></script>
+</body>
+</html>
