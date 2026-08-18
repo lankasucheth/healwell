@@ -53,30 +53,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p class="doctor-bio">${doctor.bio}</p>
       </div>
 
-      <div class="availability-card">
-        <h2>Weekly Availability</h2>
-        <div id="availability-list" class="availability-list"></div>
-      </div>
-
       ${renderBookingSection(doctorId, slots)}
     `;
-
-    const availabilityList = document.getElementById("availability-list");
-
-    if (slots.length === 0) {
-      availabilityList.innerHTML = `<p class="no-slots">No availability set for this doctor yet.</p>`;
-    } else {
-      slots.forEach((slot) => {
-        const slotEl = document.createElement("div");
-        slotEl.className = "slot-item";
-        slotEl.innerHTML = `
-          <span class="slot-day">${slot.dayOfWeek}</span>
-          <span class="slot-time">${formatTime12hr(slot.startTime)} - ${formatTime12hr(slot.endTime)}</span>
-          <span class="slot-duration">${slot.slotDurationMinutes} min slots</span>
-        `;
-        availabilityList.appendChild(slotEl);
-      });
-    }
   }
 
   try {
