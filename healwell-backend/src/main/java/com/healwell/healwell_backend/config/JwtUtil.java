@@ -2,15 +2,27 @@ package com.healwell.healwell_backend.config;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final SecretKey secretKey = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
+    @Value("${jwt.secret}")
+    private String secretString;
+
+    private SecretKey secretKey;
+
+    @PostConstruct
+    public void init() {
+        this.secretKey = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
+    }
+
     private final long expirationMs = 86400000; // 24 hours
 
     public String generateToken(String email, String role) {
@@ -39,7 +51,6 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
-        
     }
 
     public String extractRole(String token) {
