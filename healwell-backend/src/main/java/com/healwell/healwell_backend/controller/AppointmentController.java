@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import com.healwell.healwell_backend.dto.BookedSlotsResponse;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -40,6 +44,28 @@ public class AppointmentController {
             LocalDateTime dateTime = LocalDateTime.parse(body.get("dateTime"));
             Appointment appointment = appointmentService.bookAppointment(email, doctorId, dateTime);
             return ResponseEntity.ok(appointment);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/doctor/{doctorId}/booked-slots")
+    public ResponseEntity<?> getBookedSlots(@PathVariable Long doctorId,
+                                             @RequestParam String date) {
+        try {
+            LocalDate targetDate = LocalDate.parse(date);
+            LocalDateTime start = targetDate.atStartOfDay();
+            LocalDateTime end = targetDate.atTime(LocalTime.MAX);
+
+            List<Appointment> appointments = appointmentService.getBookedAppointments(
+                    doctorId, start, end, Appointment.Status.CANCELLED
+            );
+
+            List<LocalTime> bookedTimes = appointments.stream()
+                    .map(a -> a.getDateTime().toLocalTime())
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new BookedSlotsResponse(bookedTimes));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

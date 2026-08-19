@@ -359,3 +359,57 @@ replacing old content first, causing duplicated function definitions
 by checking VS Code's Outline panel, which clearly showed the duplicates. 
 Fixed by fully clearing the file and pasting one clean version.
 Lesson: when replacing significant chunks of a JS file,
+## [19-08-2026] Booking Flow Complete + JWT Restart Bug Fixed + Git Branching Learned
+
+**Status:** Done & tested (booking flow fully working end-to-end)
+
+**What was built:**
+- Time slot generation: date picker -> matches weekday -> generates 30-min slots 
+  from morning (10-2) and evening (4-7) availability blocks
+- Past-hour filtering: if today's date is picked, already-passed times are hidden
+- Booked-slot checking: new GET /api/appointments/doctor/{doctorId}/booked-slots?date=X 
+  endpoint (public, privacy-safe -- only returns times, no patient names/IDs)
+- Styled slot grid: free slots (white/outlined), booked slots (green "Booked" badge, 
+  disabled), selected slot (filled teal) -- matches site theme
+- Confirm Booking button: wired to POST /api/appointments/book/{doctorId}, shows 
+  success/error messages, re-renders slots after successful booking
+
+**Backend additions:**
+- BookedSlotsResponse DTO (dto/) -- minimal, privacy-safe response shape
+- AppointmentService.getBookedAppointments() -- follows existing findAll().stream() 
+  pattern used throughout the service
+- SecurityConfig: added GET /api/appointments/doctor/** to permitAll (scoped narrowly, 
+  NOT the full /api/appointments/** -- that would have exposed /mine and /all)
+
+**Major bug found & fixed:** JWT tokens were being invalidated on every backend restart.
+- Root cause: JwtUtil generated a random signing key in-memory (Keys.secretKeyFor()) 
+  instead of loading a fixed one -- every restart = new key = all old tokens fail 
+  signature validation
+- Compounding factor: no custom AuthenticationEntryPoint configured, so Spring 
+  Security's default Http403ForbiddenEntryPoint returns 403 for ALL unauthenticated 
+  requests -- made "getting 403" a misleading signal, indistinguishable from a real 
+  authorization failure
+- Second compounding factor: even after fixing the key, a STALE token cached in 
+  localStorage (signed under the old random key) kept causing 403s until manually 
+  cleared via DevTools -- log out/in alone didn't help because Spring DevTools had 
+  auto-restarted mid-session
+- Fix: added jwt.secret to application.properties (git-ignored, same pattern as DB 
+  password), loaded via @Value + @PostConstruct in JwtUtil, replacing the random key
+- Production note: jwt.secret must move to an environment variable before deployment, 
+  not stay in application.properties
+
+**Git/GitHub -- new skill practiced today:**
+- Created a second GitHub account as a collaborator, to practice real PR review 
+  (not just self-merging)
+- Full workflow done end-to-end: git checkout -b -> commit -> push -> open PR -> 
+  request review -> second account approves -> merge -> delete branch -> sync local
+- Did this twice: once for the "remove weekly availability list" cleanup (fully 
+  merged), and now for this booking-flow branch (feature/booking-slot-selection)
+
+**Tested:**
+- Full booking flow confirmed working end-to-end: pick date, see slots, select one, 
+  confirm, see "Appointment booked successfully!", slot immediately shows as Booked ✅
+
+**Known polish item for later:** slot grid currently shows as one flat list -- 
+Morning/Evening section grouping with subheadings was designed but not built 
+(deferred to keep today's scope focused).

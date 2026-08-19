@@ -113,3 +113,42 @@
   text-align: center;
   padding: 20px 0;
 }
+
+.slots-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.slot-btn {
+  padding: 10px 0;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.slot-free {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #1a1a1a;
+}
+
+.slot-free:hover {
+  border-color: #0f6a52;
+  background-color: #f0f7f5;
+}
+
+.slot-free.selected {
+  background-color: #0f6a52;
+  border-color: #0f6a52;
+  color: #fff;
+}
+
+.slot-booked {
+  background-color: #e1f5ee;
+  color: #0f6a52;
+  border: none;
+  cursor: not-allowed;
+}

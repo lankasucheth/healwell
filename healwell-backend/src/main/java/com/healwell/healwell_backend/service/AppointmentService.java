@@ -90,6 +90,14 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+        public List<Appointment> getBookedAppointments(Long doctorId, LocalDateTime start, LocalDateTime end, Appointment.Status excludedStatus) {
+        return appointmentRepository.findAll().stream()
+                .filter(a -> a.getDoctor().getId().equals(doctorId))
+                .filter(a -> !a.getDateTime().isBefore(start) && !a.getDateTime().isAfter(end))
+                .filter(a -> a.getStatus() != excludedStatus)
+                .toList();
+    }
+
     public List<Appointment> getMyAppointmentsAsPatient(String patientEmail) {
         Patient patient = getPatientByEmail(patientEmail);
         return appointmentRepository.findAll().stream()
