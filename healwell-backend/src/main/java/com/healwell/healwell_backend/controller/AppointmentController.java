@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import com.healwell.healwell_backend.dto.BookedSlotsResponse;
+import com.healwell.healwell_backend.dto.AppointmentResponse;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.stream.Collectors;
@@ -81,7 +82,10 @@ public class AppointmentController {
             } else {
                 result = appointmentService.getMyAppointmentsAsPatient(email);
             }
-            return ResponseEntity.ok(result);
+            List<AppointmentResponse> response = result.stream()
+                    .map(AppointmentResponse::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
