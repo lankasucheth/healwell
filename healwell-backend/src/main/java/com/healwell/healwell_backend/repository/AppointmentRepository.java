@@ -4,5 +4,5 @@ import com.healwell.healwell_backend.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    boolean existsByDoctorIdAndPatientId(Long doctorId, Long patientId);
+    boolean existsByDoctorIdAndPatientIdAndStatus(Long doctorId, Long patientId, Appointment.Status status);
 }

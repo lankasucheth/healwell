@@ -80,12 +80,14 @@ public class MedicalRecordService {
     public List<MedicalRecord> getPatientRecordsAsDoctor(String doctorEmail, Long patientId) {
         Doctor doctor = getDoctorByEmail(doctorEmail);
 
-        if (!appointmentRepository.existsByDoctorIdAndPatientId(doctor.getId(), patientId)) {
+        if (!appointmentRepository.existsByDoctorIdAndPatientIdAndStatus(
+                doctor.getId(), patientId, Appointment.Status.COMPLETED)) {
             throw new AccessDeniedException("You can only view records for patients you have treated");
         }
 
         return medicalRecordRepository.findAll().stream()
                 .filter(r -> r.getPatient().getId().equals(patientId))
+                .filter(r -> r.getDoctor().getId().equals(doctor.getId()))
                 .sorted((a, b) -> b.getRecordDate().compareTo(a.getRecordDate()))
                 .toList();
     }
