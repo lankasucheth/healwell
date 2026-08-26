@@ -3,6 +3,7 @@ package com.healwell.healwell_backend.service;
 import com.healwell.healwell_backend.model.*;
 import com.healwell.healwell_backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class MedicalRecordService {
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
         if (!appointment.getDoctor().getId().equals(doctor.getId())) {
-            throw new RuntimeException("You can only create records for your own appointments");
+            throw new AccessDeniedException("You can only create records for your own appointments");
         }
 
         MedicalRecord record = new MedicalRecord();
@@ -77,7 +78,12 @@ public class MedicalRecordService {
     }
 
     public List<MedicalRecord> getPatientRecordsAsDoctor(String doctorEmail, Long patientId) {
-        getDoctorByEmail(doctorEmail);
+        Doctor doctor = getDoctorByEmail(doctorEmail);
+
+        if (!appointmentRepository.existsByDoctorIdAndPatientId(doctor.getId(), patientId)) {
+            throw new AccessDeniedException("You can only view records for patients you have treated");
+        }
+
         return medicalRecordRepository.findAll().stream()
                 .filter(r -> r.getPatient().getId().equals(patientId))
                 .sorted((a, b) -> b.getRecordDate().compareTo(a.getRecordDate()))
