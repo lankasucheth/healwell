@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import Login from './components/Login'
 import AppointmentsPage from './pages/AppointmentsPage'
+import DoctorsPage from './pages/DoctorsPage'
 
 function App() {
     const [token, setToken] = useState(() => localStorage.getItem('token'))
@@ -34,6 +35,7 @@ function App() {
                     )
                 }
             />
+            <Route path="/doctors" element={<DoctorsPage />} />
             <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
     )
